@@ -83,7 +83,7 @@ abstract class RequestHandler {
         $timeSpent = $this->endProcessingMicrotime - $this->startProcessingMicrotime;
 
         //===================== TRY SAVE TO DB: ========================================================================
-        $db = new simplePDO('fmscan.mysql.tools', 'fmscan_nptest', '-I4n0s)4Al', 'fmscan_nptest');
+        $db = $this->instantiateDBConnection();
         $preparedQuery = 'INSERT INTO logs (ip_address, start_date_timestamp, end_date_timestamp, date_diff, time_spent) VALUES (?, ?, ?, ?, ?);';
 
         try {
@@ -120,5 +120,10 @@ abstract class RequestHandler {
         else {
             return true;
         }
+    }
+
+    protected function instantiateDBConnection() {
+        $settings = parse_ini_file('settings/settings.ini');
+        return new simplePDO($settings['hostname'], $settings['username'], $settings['password'], $settings['dbname']);
     }
 }
