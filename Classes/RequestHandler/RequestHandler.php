@@ -40,6 +40,16 @@ abstract class RequestHandler {
         if (count($twoDates) !== 2) {
             $this->generateResponse('Number of date components should be only 2.', 'error');
         } else {
+
+            //Check if month number <= 12:
+            if ($this->checkMonthNumber($twoDates[0], '/', 1) === false ||
+                $this->checkMonthNumber($twoDates[0], '.', 0) === false ||
+                $this->checkMonthNumber($twoDates[1], '/', 1) === false ||
+                $this->checkMonthNumber($twoDates[1], '.', 0) === false) {
+
+                $this->generateResponse('Month number cannot be > 12!', 'error');
+            }
+
             $this->firstDate = DateTime::createFromFormat('Y/m/d', $twoDates[0]) !== false ? DateTime::createFromFormat('Y/m/d', $twoDates[0]) : DateTime::createFromFormat('m.d.Y', $twoDates[0]);
             $this->secondDate = DateTime::createFromFormat('Y/m/d', $twoDates[1]) !== false ? DateTime::createFromFormat('Y/m/d', $twoDates[1]) : DateTime::createFromFormat('m.d.Y', $twoDates[1]);
         }
@@ -93,5 +103,22 @@ abstract class RequestHandler {
         $this->rawData = $rawData;
         $this->clientIP = $clientIP;
         $this->startProcessingMicrotime = $startProcessingMicrotime;
+    }
+
+    //Generally, DateTime object correctly handling case when number of month == 13.
+    //In this case it just considered as 1st month of NEXT year.
+    //But to not mislead the user, we will check month number and fail validation if it > 12.
+    protected function checkMonthNumber(string $date, string $delimiter, int $monthPosition) {
+        $dateParsed = explode($delimiter, $date);
+
+        if (count($dateParsed) === 3 && intval($dateParsed[$monthPosition]) > 12) {
+            return false;
+        }
+        elseif (count($dateParsed) !== 3) {
+            return null;
+        }
+        else {
+            return true;
+        }
     }
 }
