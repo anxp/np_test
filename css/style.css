@@ -1,0 +1,34 @@
+.header {
+    position: absolute;
+    width: 380px;
+}
+
+.for-input {
+    display: inline-block;
+}
+
+.for-button {
+    display: inline-block;
+}
+
+button {
+    display: block;
+}
+
+input {
+    transform: translateY(-15%);
+    font-size: 24px;
+
+}
+
+.notification{
+    border: 2px solid green;
+    color: green;
+    text-align: center;
+}
+
+.error{
+    border: 2px solid red;
+    color: red;
+    text-align: center;
+}
