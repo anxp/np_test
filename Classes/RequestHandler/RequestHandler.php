@@ -73,7 +73,7 @@ abstract class RequestHandler {
         $timeSpent = $this->endProcessingMicrotime - $this->startProcessingMicrotime;
 
         //===================== TRY SAVE TO DB: ========================================================================
-        $db = new simplePDO('localhost', 'fmscan_nptest', '-I4n0s)4Al', 'fmscan_nptest');
+        $db = new simplePDO('fmscan.mysql.tools', 'fmscan_nptest', '-I4n0s)4Al', 'fmscan_nptest');
         $preparedQuery = 'INSERT INTO logs (ip_address, start_date_timestamp, end_date_timestamp, date_diff, time_spent) VALUES (?, ?, ?, ?, ?);';
 
         try {
